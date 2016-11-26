@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  div.container
+    div.navbar-header
+      a.navbar-brand Ajou Univ Data Mining Project
+
+  div.container
+    div#mainp
+      h1 감정 사전 만들기
+      p 아래 단어에 대해 참가자 분이 느끼시는 감정을 선택해 주세요.
+  div#word
+    p 단어
+  div#selection
+    form(action='/result', method='post')
+      input.btn-primary(type='submit', name='selection', value='긍정')
+      input.btn-danger(type='submit', name='selection', value='부정')
+      input.btn-warning(type='submit', name='selection', value='의미없음')
+  div#test
+    #{data}
