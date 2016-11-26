@@ -1,5 +1,3 @@
-
-
 const MySQL = require('mysql');
 
 var connection = MySQL.createConnection({
@@ -19,4 +17,3 @@ connection.connect(function(err) {
         console.log('done');
     }
 });
-
