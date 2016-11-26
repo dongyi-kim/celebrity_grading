@@ -11,15 +11,6 @@ var users = require('./routes/users');
 
 var app = express();
 
-/*var connection = mysql.createConnection({
-  host    :'codingmonster.net',
-  port : 3306,
-  user : 'datamining',
-  password : 'dm2016',
-  database:'celebrity_grading'
-});*/
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -30,7 +21,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.use('/', index);
 app.use('/result', users);
@@ -53,19 +44,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-/*connection.connect(function(err) {
-  if (err) {
-    console.error('mysql connection error');
-    console.error(err);
-    throw err;
-  }else{
-    console.log('done');
-  }
+app.listen(3000, function() {
 });
-
-connection.query('SELECT * FROM words', function (err, result) {
-  console.log(result[0]);
-})*/
-
 
 module.exports = app;
