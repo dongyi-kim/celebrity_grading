@@ -1,14 +1,14 @@
 const MySQL = require('mysql');
+const FS    = require('fs');
 
-var connection = MySQL.createConnection({
-    host    :'codingmonster.net',
-    port : 3306,
-    user : 'datamining',
-    password : 'dm2016',
-    database:'celebrity_grading'
-});
+//read config json file and parse into js object 
+const config = JSON.parse(  FS.readFileSync('../config.json', 'utf8') );
 
-connection.connect(function(err) {
+//create db connection from db_configuration 
+var db = MySQL.createConnection(config.db_config);
+
+//connect to the database 
+db.connect(function(err) {
     if (err) {
         console.error('mysql connection error');
         console.error(err);
