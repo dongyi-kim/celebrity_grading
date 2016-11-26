@@ -3,17 +3,8 @@
 
 import sys
 import pymysql
-import pprint
 import nlp
-
-class MyPrettyPrinter(pprint.PrettyPrinter):
-	def format(self, _object, context, maxlevels, level):
-		if isinstance(_object, unicode):
-			return "'%s'" % _object.encode('utf8'), True, False
-		elif isinstance(_object, str):
-			_object = unicode(_object,'utf8')
-			return "'%s'" % _object.encode('utf8'), True, False
-		return pprint.PrettyPrinter.format(self, _object, context, maxlevels, level)
+import os
 
 conn = pymysql.connect(host="codingmonster.net",
 		       port=3306,
@@ -30,27 +21,31 @@ conn.query("set character_set_database=utf8;")
 curs = conn.cursor()
 #curs.execute("set names utf8")
 
-nlp_result = nlp.doNLP(sys.argv[1])
+dir = "../word_collector/data"
+for name in os.listdir(dir):
+    path = os.path.join(dir, name)
 
-up_word = 0
-new_word = 0
-for word in nlp_result :
-    is_exist_query = "select * from words where word = \'" + word + "\';"
-    curs.execute(is_exist_query.encode('utf8'))
-    rows = curs.fetchall()
-    query = ""
+    nlp_result = nlp.doNLP(path)
 
-    if len(rows) > 0 :
-        up_word = up_word + 1
-        query = "update words set mentioned = mentioned + 1 where (word = \'" + word + "\')"
-    else :
-        new_word = new_word + 1
-        query = "insert into words(word, positive, negative, useless, mentioned) values(\'" + word + "\', 0, 0, 0, 1)"
+    up_word = 0
+    new_word = 0
+    for word in nlp_result :
+        is_exist_query = "select * from words where word = \'" + word + "\';"
+        curs.execute(is_exist_query.encode('utf8'))
+        rows = curs.fetchall()
+        query = ""
 
-    curs.execute(query.encode('utf8'))
+        if len(rows) > 0 :
+            up_word = up_word + 1
+            query = "update words set mentioned = mentioned + 1 where (word = \'" + word + "\')"
+        else :
+            new_word = new_word + 1
+            query = "insert into words(word, positive, negative, useless, mentioned) values(\'" + word + "\', 0, 0, 0, 1)"
 
-conn.commit()
-conn.close()
+        curs.execute(query.encode('utf8'))
 
-print ("Updated words # : %d", up_word)
-print ("Inserted words # : %d", new_word)
+    conn.commit()
+    conn.close()
+
+    print ("Updated words # : " + str(up_word))
+    print ("Inserted words # : " + str(new_word))
