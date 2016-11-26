@@ -1,0 +1,11 @@
+{
+    "db_config" : 
+    {
+        "host"      : "codingmonster.net",
+        "port"      : 3306,
+        "user"      : "datamining",
+        "password"  : "dm2016",
+        "database"  : "celebrity_grading"
+    }
+    
+}
