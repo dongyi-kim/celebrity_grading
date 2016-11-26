@@ -41,10 +41,9 @@ router.post('/', function (req, res) {
     var word = req.body.word;
   console.log(selection);
 
-   connection.query('update words set '+selection+'='+selection+'+1 where (word=\''+word+'\')', function (err, result) {
+   connection.query('update words set '+selection+'='+selection+'+1, total = positive + negative + useless where (word=\''+word+'\')', function (err, result) {
        console.log(result);
     });
-
 
     res.render('result', { title: 'Express'});
 });
