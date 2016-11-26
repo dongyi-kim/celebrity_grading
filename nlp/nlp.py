@@ -12,19 +12,20 @@ keyword = []
 
 def getKeyword(nlp_result) :
 	for word in nlp_result :
-		if word[1] == 'NNG' or word[1] == 'VV' :
-			keyword.append(word[0])	
+		if (word[1] == 'NNG' or word[1] == 'VV') and len(word[0]) > 1:
+			keyword.append(word[0])
 
-fname = sys.argv[1]
-with codecs.open(fname, 'r', encoding='utf8') as f:
-	contents = f.readlines()
-	
-	for content in contents :
-		if content.strip() == "" : 
-			continue
+def doNLP(fname) :
+    with codecs.open(fname, 'r', encoding='utf8') as f:
+        contents = f.readlines()
 
-		nlp_result = komoran.pos(content)
-		getKeyword(nlp_result)
+        for content in contents :
+            if content.strip() == "" :
+                continue
 
-result = list(set(keyword))
-pprint(result)
+            nlp_result = komoran.pos(content)
+            getKeyword(nlp_result)
+
+    return list(set(keyword))
+
+#pprint(result)
