@@ -24,19 +24,53 @@ connection.connect(function(err) {
 var rstword = new Array();
 var rsttotal = new Array();
 
+function structMem(){
+    var word;
+    var index;
+    var total;
+}
+
+var rstary = new Array();
+
 connection.query('SELECT * FROM words', function (err, result) {
     console.log(result[0]);
-    for(var i=0;i<result.length;i++){
-        rstword[i]=result[i].word;
-        rsttotal[i]=result[i].total;
+    console.log(result.length);
+
+    for(var a=0;a<result.length;a++){
+        rstary[a]= new structMem();
+    }
+
+    var tempary = new structMem();
+
+    for(var b=0;b<result.length;b++) {
+        rstary[b].word = result[b].word;
+        rstary[b].index = b;
+        rstary[b].total = result[b].total;
     }
 });
 
-console.log(rstword[0]+', '+rsttotal[0]);
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    connection.release;
+
+  var tempary = new structMem();
+  for(var i = 0; i<rstary.length-1;i++){
+      for(var j = i+1;j<rstary.length;j++){
+          if(rstary[i].total>rstary[j].total){
+              tempary = rstary[i];
+              rstary[i] = rstary[j];
+              rstary[j] = tempary;
+          }
+      }
+  }
+
+  var r = Math.floor(Math.random()*20);
+
+    res.render('index', { title: 'Express', data: rstary[r].word });
+
+
 });
 
 module.exports = router;
