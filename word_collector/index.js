@@ -21,6 +21,7 @@ const isValidString = function(text)
     if(text.endsWith('naver.com') ) 
         return false;
 
+    //언론사 마크 제거 
     if(text.length <= 10 && ( 
             text.includes('뉴스')     || text.includes('스포츠')     || text.includes('일보') || text.includes('신문')
             || text.includes('경제')  || text.includes('기자')      || text.includes('YTN') || text.includes('코리아') 
@@ -30,6 +31,7 @@ const isValidString = function(text)
             || text.includes('헤럴드') || text.includes('허핑턴')   || text.includes('리포트') || text.includes('BC')  ) ) )
         return false;
 
+    //날짜마크 제거 
     if(text.length == 11 && ( text.startsWith('20') || text.startsWith('19') ) )
         return false;
 
