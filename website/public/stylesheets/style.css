@@ -14,8 +14,6 @@ a {
 
 #word{
   text-align: center;
-  font-size: 38px;
-  margin: 50px;
 }
 #selection{
   text-align: center;
@@ -47,9 +45,4 @@ a {
   padding: 5px;
   padding-left: 8px;
   padding-right: 8px;
-}
-
-#lower{
-  margin-top: 160px;
-  text-align: center;
 }
