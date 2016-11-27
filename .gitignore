@@ -3,7 +3,7 @@ logs
 *.log
 npm-debug.log*
 
-word_collector/data/*.txt
+
 
 config.json
 # Runtime data
