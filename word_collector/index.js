@@ -12,13 +12,13 @@ const Async = require('async');
 //read config json file and parse into js object 
 const config = JSON.parse(  FS.readFileSync('../config.json', 'utf8') );
 
-const deathnote = FS.readFileSync('../deathnote.txt', 'utf8').replace(/,|\t/gi, '\n');
+const deathnote = FS.readFileSync('../deathnote.txt', 'utf8').replace(/,|\.|\t/gi, '\n');
 const lines = deathnote.split('\n');
 
 const lineValidator = function(text)
 {
     //길이
-    if(text.length <= 2)
+    if(text.length <= 6)
         return false;
 
     if(text.endsWith('naver.com') ) 
@@ -31,7 +31,9 @@ const lineValidator = function(text)
             || text.includes('MBN')  || text.includes('BS')     || text.includes('코리아')   || text.includes('라디오')
             || text.includes('데일리') || text.includes('리포트')  || text.includes('TV')  || text.includes('타임') 
             || text.includes('뉴시스') || text.includes('투데이')  || text.includes('한겨레' || text.includes('위클리')
-            || text.includes('헤럴드') || text.includes('허핑턴')   || text.includes('리포트') || text.includes('BC')  ) ) )
+            || text.includes('헤럴드') || text.includes('허핑턴')   || text.includes('리포트') || text.includes('BC') 
+            || text.includes('포스트') || text.includes('위키')   || text.includes('민중') || text.includes('미디어') 
+            || text.includes('방송')   || text.includes('시사')    || text.includes('헤드라인') || text.includes('방송')   ) ) )
         return false;
 
     //날짜마크 제거 
@@ -44,7 +46,7 @@ const lineValidator = function(text)
     if(text.startsWith('@')  ||  text.endsWith('****') )
         return false;
                          
-    if( text.startsWith('답글') || text.startsWith('공감') || text.startsWith('비공감') || text.startsWith('리트윗')  || text.startsWith('관심글')  )
+    if( text.startsWith('답글') || text.startsWith('공감') || text.startsWith('비공감') || text.startsWith('리트윗')  || text.startsWith('관심글')  || text.endsWith('보기')  )
         return false;
 
     return true;
@@ -106,13 +108,13 @@ const crawlPage = function(url, extractor, validator, callback)
                 {
                     var text = nodes[index].nodeValue.trim();
                     text = text.replace(/[&\/\\#,+()$~%'":*?<>{}\[\]'"`‘’”“ㆍ-]/g, '');
-
                     var isValid = validator(text);
                     if(isValid)
                         resultString += text + '\n';
                 }
             }
         }
+        // console.log('---' + resultString);
         callback(null, resultString);
     });
 }
@@ -129,7 +131,6 @@ const collectTexts = function(name)
         const url = 'https://search.naver.com/search.naver?ie=utf8&where=news&query='+encodedName+'&sm=tab_pge&sort=0&photo=0&field=0&reporter_article=&pd=0&ds=&de=&docid=&nso=so:r,p:all,a:all&mynews=0&cluster_rank='+cluster_rank+'&start='+start+'&refresh_start=0';  
         tasks.push( function(callback)
         {
-
             console.log(url);
             crawlPage(url, newsExtractor, lineValidator, callback);
         });
@@ -260,7 +261,7 @@ for(var i = 0 ; i < lines.length; i++)
     // setTimeout( function(){
         collectTexts(name);
     // }, i*1000);
-    // break;
+    break;
     // console.log(requestOptions.url);
 
 }
