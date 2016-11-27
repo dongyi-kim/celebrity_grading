@@ -95,7 +95,7 @@ const crawlPage = function(url, extractor, validator, callback)
     Request(requestOptions, function (error, response, body)
     {
         var resultString = '';
-        console.log(body);
+//        console.log(body);
         if (!error && response.statusCode == 200) {
             var xml = extractor(body);
           
@@ -155,25 +155,23 @@ const collectTexts = function(name)
             {
                 resultString += results[i].trim() + '\n';
             }
-            console.log(resultString);
+		resultString = resultString.trim();
+		
             FS.writeFile('data/' + name + '.txt', resultString, 'utf8', function(){
-                console.log('[done] ' + name);
+                console.log('[done] ' + name + ', ' + resultString.length);
             });
         }
     );
 
-}
+};
 
 var check = {};
-for(var i = 0 ; i < lines.length; i++)
-{
-    const name = lines[i].replace(/\s|\n|\t/gi,'').trim();
-
+//console.log(lines);
+lines.forEach(function(name){
+    name = name.replace(/\s|\n|\t/gi,'').trim();
     if(name.length <= 1 || check[name])
-        continue;
+        return;
     check[name] = true;
-
     collectTexts(name);
-  
-    break;
-}
+});
+
