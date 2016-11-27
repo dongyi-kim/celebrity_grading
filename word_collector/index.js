@@ -143,91 +143,7 @@ const collectTexts = function(name)
     });
   
     Async.parallel(
-        tasks
-        // [
-        // function(callback)
-        // {   //news 
-        //     const url = 'https://search.naver.com/search.naver?where=news&sm=tab_jum&ie=utf8&query=' + UrlEncode(name);
-        //     var requestOptions = {
-        //         url : url,
-        //         headers: {
-        //             'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2',
-        //             'Accept-Language' : 'ko-KR',
-        //             'Connection' : 'Keep-Alive',
-        //             'Cookie' : 'NNB=037Y6EIUMMUVE;',
-        //         }
-        //     };
-        //     Request(requestOptions, function (error, response, body)
-        //     {
-        //         var resultString = '';
-        //         if (!error && response.statusCode == 200) {
-        //             var begin = body.indexOf('<ul class="type01">');
-        //             body = body.substring(begin);
-
-        //             var end = body.indexOf('<div class="paging"');
-        //             html = body.substring(0, end -7);
-
-        //             html = html.replace(/<strong[^>]*>/gi, "");
-        //             html = html.replace(/<\/strong>/gi, "");
-
-        //             var doc = new DOM().parseFromString(html);
-        //             if(doc)
-        //             {
-        //                 var nodes = XPath.select("//ul/descendant::*/text()", doc);
-        //                 for(var index = 0 ; index < nodes.length; index ++)
-        //                 {
-        //                     var text = nodes[index].nodeValue.trim();
-        //                     text = text.replace(/[&\/\\#,+()$~%'":*?<>{}\[\]'"`‘’”“ㆍ-]/g, '');
-        //                     if(isValidString(text))
-        //                         resultString += text + '\n';
-        //                 }
-        //             }
-        //         }
-        //         callback(null, resultString);
-        //     });
-        // },
-        // function(callback)
-        // {   //sns
-        //     const url = 'https://search.naver.com/search.naver?where=realtime&sm=tab_jum&ie=utf8&query=' + UrlEncode(name);
-        //     var requestOptions = {
-        //         url : url,
-        //         headers: {
-        //             'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2',
-        //             'Accept-Language' : 'ko-KR',
-        //             'Connection' : 'Keep-Alive',
-        //             'Cookie' : 'NNB=037Y6EIUMMUVE;',
-        //         }
-        //     };
-        //     Request(requestOptions, function (error, response, body)
-        //     {
-        //         var resultString = '';
-        //         if (!error && response.statusCode == 200) {
-        //             var begin = body.indexOf('<ul class="type01">');
-        //             body = body.substring(begin);
-
-        //             var end = body.indexOf('<div class="bt_more"');
-        //             html = body.substring(0, end-32);
-
-        //             html = html.replace(/<strong[^>]*>/gi, "");
-        //             html = html.replace(/<\/strong>/gi, "");
-
-        //             var doc = new DOM().parseFromString(html);
-        //             if(doc)
-        //             {
-        //                 var nodes = XPath.select("//ul/descendant::*/text()", doc);
-        //                 for(var index = 0 ; index < nodes.length; index ++)
-        //                 {
-        //                     var text = nodes[index].nodeValue.trim();
-        //                     text = text.replace(/[&\/\\#,+()$~%'":*?<>{}\[\]'"`‘’”“ㆍ-]/g, '');
-        //                     if(isValidString(text))
-        //                         resultString += text + '\n';
-        //                 }
-        //             }
-        //         }
-        //         callback(null, resultString);
-        //     });
-        // }]
-        ,
+        tasks,
         function(err, results)
         {
             if(!results)
@@ -257,29 +173,5 @@ for(var i = 0 ; i < lines.length; i++)
     if(name.length <= 1 || check[name])
         continue;
     check[name] = [];
-
-    // setTimeout( function(){
-        collectTexts(name);
-    // }, i*1000);
-    break;
-    // console.log(requestOptions.url);
-
+    collectTexts(name);
 }
-
-
-// //create db connection from db_configuration 
-// var db = MySQL.createConnection(config.db_config);
-
-// //connect to the database 
-// db.connect(function(err) {
-//     if (err) {
-//         console.error('mysql connection error');
-//         console.error(err);
-//         throw err;
-//     }else{
-//         console.log('done');
-//     }
-// });
-
-
-
