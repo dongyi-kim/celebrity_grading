@@ -86,7 +86,7 @@ const crawlPage = function(url, extractor, validator, callback)
             'User-Agent': 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2',
             'Accept-Language' : 'ko-KR',
             'Connection' : 'Keep-Alive',
-            'Cookie' : 'NNB=037Y6EIUNNUVE;',
+            'Cookie' : 'NNB=037Y6EIUTTUVE;',
             'Referer' : 'http://naver.com',
         },
         // agent: agent,
@@ -95,11 +95,10 @@ const crawlPage = function(url, extractor, validator, callback)
     Request(requestOptions, function (error, response, body)
     {
         var resultString = '';
-        // console.log(body);
+        console.log(body);
         if (!error && response.statusCode == 200) {
             var xml = extractor(body);
           
-
             var doc = new DOM().parseFromString(xml);
             if(doc)
             {
@@ -123,7 +122,7 @@ const collectTexts = function(name)
     var tasks = [];
 
     //news 
-    for(var i = 0 ; i < 30; i++)
+    for(var i = 0 ; i < 3; i++)
     {
         const start = (i * 10 + 1); 
         const cluster_rank = (start + 20); 
@@ -156,7 +155,7 @@ const collectTexts = function(name)
             {
                 resultString += results[i].trim() + '\n';
             }
-            // console.log(resultString);
+            console.log(resultString);
             FS.writeFile('data/' + name + '.txt', resultString, 'utf8', function(){
                 console.log('[done] ' + name);
             });
@@ -172,6 +171,8 @@ for(var i = 0 ; i < lines.length; i++)
 
     if(name.length <= 1 || check[name])
         continue;
-    check[name] = [];
+    check[name] = true;
     collectTexts(name);
+
+    break;
 }
