@@ -5,6 +5,9 @@ const UrlEncode = require('urlencode');
 const XPath = require('xpath');
 const DOM   = require('xmldom').DOMParser;
 const Async = require('async');
+// const HttpsProxyAgent = require('https-proxy-agent');  
+// const proxy = 'http://gethide.net';
+// const agent = new HttpsProxyAgent(proxy);  
 
 //read config json file and parse into js object 
 const config = JSON.parse(  FS.readFileSync('../config.json', 'utf8') );
@@ -82,12 +85,15 @@ const crawlPage = function(url, extractor, validator, callback)
             'Accept-Language' : 'ko-KR',
             'Connection' : 'Keep-Alive',
             'Cookie' : 'NNB=037Y6EIUNNUVE;',
-        }
+            'Referer' : 'http://naver.com',
+        },
+        // agent: agent,
     };
+
     Request(requestOptions, function (error, response, body)
     {
         var resultString = '';
-        console.log(body);
+        // console.log(body);
         if (!error && response.statusCode == 200) {
             var xml = extractor(body);
           
@@ -115,13 +121,16 @@ const collectTexts = function(name)
     var tasks = [];
 
     //news 
-    for(var i = 0 ; i < 10; i++)
+    for(var i = 0 ; i < 30; i++)
     {
+        const start = (i * 10 + 1); 
+        const cluster_rank = (start + 20); 
+        const encodedName =  UrlEncode(name);
+        const url = 'https://search.naver.com/search.naver?ie=utf8&where=news&query='+encodedName+'&sm=tab_pge&sort=0&photo=0&field=0&reporter_article=&pd=0&ds=&de=&docid=&nso=so:r,p:all,a:all&mynews=0&cluster_rank='+cluster_rank+'&start='+start+'&refresh_start=0';  
         tasks.push( function(callback)
         {
-            const index = i * 10 ; 
-            const encodedName =  UrlEncode(name);
-            const url = `https://search.naver.com/search.naver?ie=utf8&where=news&query=${encodedName}&sm=tab_pge&sort=0&photo=0&field=0&reporter_article=&pd=0&ds=&de=&docid=&nso=so:r,p:all,a:all&mynews=0&cluster_rank=00&start=${index}&refresh_start=0`;
+
+            console.log(url);
             crawlPage(url, newsExtractor, lineValidator, callback);
         });
     }
@@ -248,10 +257,10 @@ for(var i = 0 ; i < lines.length; i++)
         continue;
     check[name] = [];
 
-    setTimeout( function(){
+    // setTimeout( function(){
         collectTexts(name);
-    }, i*1000);
-    break;
+    // }, i*1000);
+    // break;
     // console.log(requestOptions.url);
 
 }
