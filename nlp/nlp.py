@@ -12,7 +12,7 @@ def getKeyword(nlp_result) :
     keyword = []
     for word in nlp_result :
         if (word[1] == 'NNG' or word[1] == 'VV') and len(word[0]) > 1:
-			keyword.append(word[0])
+	    keyword.append(word[0])
     return keyword
 
 def doNLP(fname) :
