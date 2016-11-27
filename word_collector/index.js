@@ -172,7 +172,8 @@ for(var i = 0 ; i < lines.length; i++)
     if(name.length <= 1 || check[name])
         continue;
     check[name] = true;
-    collectTexts(name);
 
+    collectTexts(name);
+  
     break;
 }
